@@ -3,9 +3,6 @@
 set -x
 BOARD_DIR="$(dirname $0)"
 
-echo "BOARD_DIR = $BOARD_DIR"
-echo "TARGET_DIR = $TARGET_DIR"
-echo "BINARIES_DIR = $BINARIES_DIR"
 \rm -rf ${BINARIES_DIR}/fs
 mkdir -p ${BINARIES_DIR}/fs
 cp ${BINARIES_DIR}/zImage ${BINARIES_DIR}/*.dtb ${BINARIES_DIR}/fs
@@ -13,11 +10,12 @@ cp ${BINARIES_DIR}/zImage ${BINARIES_DIR}/*.dtb ${BINARIES_DIR}/fs
 # Signature file
 touch ${BINARIES_DIR}/fs/ignition.sig
 
-# Local repo bypass
-# The following if uncommented creates a file called repo.url that is used
-# as a base url for ignition (instead of the tarball 
-
-#echo "http://192.168.15.2/content/ignition-imx6.tar.gz" > ${BINARIES_DIR}/fs/repo.url
+# Repository configuration
+# Following is a base configuration of the default repository.
+# First line is the actual URL and second one is a text to be shown on the GUI.
+# On boot the repo.url file is copied to /tmp
+echo "http://www.github.com/SolidRun/ignition-imx6/tarball/master" > ${BINARIES_DIR}/fs/repo.url
+echo "SolidRun GitHub - http://www.github.com/SolidRun/ignition-imx6/" >> ${BINARIES_DIR}/fs/repo.url
 
 genext2fs -m 1 -i 4096 -B 4096 -b 9000 -d ${BINARIES_DIR}/fs/ ${BINARIES_DIR}/ignition.ext2.part
 dd if=/dev/zero of=${BINARIES_DIR}/ignition.img bs=512 count=2048

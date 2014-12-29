@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>SolidRun_Logo.png</file>
+        <file>SR_icon.png</file>
+    </qresource>
+</RCC>

@@ -1,6 +1,7 @@
 #!/bin/sh
 # Start installer post-build
 
+set -x
 BOARD_DIR="$(dirname $0)"
 
 echo "BOARD_DIR = $BOARD_DIR"
@@ -12,6 +13,9 @@ ln -fs /usr/lib/systemd/system/connman.service ${TARGET_DIR}/etc/systemd/system/
 
 # Remove /bin/tar from the root filesystem. We use /usr/bin/tar instead
 rm -rf ${TARGET_DIR}/bin/tar
+
+# Some scripts rely on mkfs.vfat
+ln -fs /sbin/mkfs.fat ${TARGET_DIR}/bin/mkfs.vfat
 
 cat > ${TARGET_DIR}/etc/systemd/system/multi-user.target.wants/ignition.service << EOF
 [Unit]
@@ -47,7 +51,12 @@ umount /mnt
 EOF
 chmod +x ${TARGET_DIR}/usr/bin/ignition_copy_repo.sh
 
+# Copy over fdisk,cfdisk,sfdisk. Those are binaries from Debian armhf and
+# and will be removed once util-linux build under buildroot is fixed
+rm -rf ${TARGET_DIR}/sbin/fdisk
+rm -rf ${TARGET_DIR}/sbin/cfdisk
+cp ../scripts/fdisk ../scripts/cfdisk ${TARGET_DIR}/sbin
 
-
-
-
+# Copy over brcm4329 and brcm4330 firmwares
+mkdir -p ${TARGET_DIR}/lib/firmware/brcm
+cp ../scripts/brcmfmac* ${TARGET_DIR}/lib/firmware/brcm
