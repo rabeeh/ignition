@@ -138,16 +138,16 @@ BR2_ROOTFS_POST_SCRIPT_ARGS=""
 
 BR2_LINUX_KERNEL=y
 BR2_LINUX_KERNEL_CUSTOM_GIT=y
-BR2_LINUX_KERNEL_CUSTOM_REPO_URL="https://github.com/SolidRun/linux-imx6-3.14.git"
-BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION="linux-linaro-lsk-v3.14-mx6"
-BR2_LINUX_KERNEL_VERSION="linux-linaro-lsk-v3.14-mx6"
+BR2_LINUX_KERNEL_CUSTOM_REPO_URL="https://github.com/SolidRun/linux-fslc"
+BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION="3.14-1.0.x-mx6-sr"
+BR2_LINUX_KERNEL_VERSION="linux-fslc-sr-3.14.y-mx6"
 BR2_LINUX_KERNEL_PATCH=""
 BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG=y
 BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="../scripts/ignition_kernel_defconfig"
 BR2_LINUX_KERNEL_ZIMAGE=y
 BR2_LINUX_KERNEL_DTS_SUPPORT=y
 BR2_LINUX_KERNEL_USE_INTREE_DTS=y
-BR2_LINUX_KERNEL_INTREE_DTS_NAME="imx6q-hummingboard imx6dl-hummingboard imx6q-cubox-i imx6dl-cubox-i"
+BR2_LINUX_KERNEL_INTREE_DTS_NAME="imx6q-hummingboard2 imx6dl-hummingboard2 imx6q-hummingboard imx6dl-hummingboard imx6q-cubox-i imx6dl-cubox-i"
 
 
 BR2_PACKAGE_BUSYBOX=y
