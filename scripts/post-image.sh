@@ -3,6 +3,10 @@
 set -x
 BOARD_DIR="$(dirname $0)"
 
+# find fdisk (also look in places that may not be on a regular users path)
+FDISK=$(PATH=$PATH:/sbin:/usr/sbin:/usr/local/sbin which fdisk)
+[ $? != 0 ] && exit 1
+
 \rm -rf ${BINARIES_DIR}/fs
 mkdir -p ${BINARIES_DIR}/fs
 cp ${BINARIES_DIR}/zImage ${BINARIES_DIR}/*.dtb ${BINARIES_DIR}/fs
@@ -17,7 +21,7 @@ touch ${BINARIES_DIR}/fs/ignition.sig
 echo "http://www.github.com/SolidRun/ignition-imx6/tarball/master" > ${BINARIES_DIR}/fs/repo.url
 echo "SolidRun GitHub - http://www.github.com/SolidRun/ignition-imx6/" >> ${BINARIES_DIR}/fs/repo.url
 
-genext2fs -m 1 -i 4096 -B 4096 -b 9000 -d ${BINARIES_DIR}/fs/ ${BINARIES_DIR}/ignition.ext2.part
+genext2fs -m 1 -i 4096 -b 36000 -d ${BINARIES_DIR}/fs/ ${BINARIES_DIR}/ignition.ext2.part
 dd if=/dev/zero of=${BINARIES_DIR}/ignition.img bs=512 count=2048
 dd if=${BINARIES_DIR}/SPL of=${BINARIES_DIR}/ignition.img bs=1K seek=1 conv=notrunc
 dd if=${BINARIES_DIR}/u-boot.img of=${BINARIES_DIR}/ignition.img bs=1K seek=42 conv=notrunc
@@ -30,4 +34,4 @@ p
 
 w
 EOF
-cat /tmp/fdisk.script | fdisk ${BINARIES_DIR}/ignition.img
+cat /tmp/fdisk.script | $FDISK ${BINARIES_DIR}/ignition.img
