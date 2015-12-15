@@ -3,6 +3,10 @@
 set -x
 BOARD_DIR="$(dirname $0)"
 
+# find fdisk (also look in places that may not be on a regular users path)
+FDISK=$(PATH=$PATH:/sbin:/usr/sbin:/usr/local/sbin which fdisk)
+[ $? != 0 ] && exit 1
+
 \rm -rf ${BINARIES_DIR}/fs
 mkdir -p ${BINARIES_DIR}/fs
 cp ${BINARIES_DIR}/zImage ${BINARIES_DIR}/*.dtb ${BINARIES_DIR}/fs
@@ -30,4 +34,4 @@ p
 
 w
 EOF
-cat /tmp/fdisk.script | fdisk ${BINARIES_DIR}/ignition.img
+cat /tmp/fdisk.script | $FDISK ${BINARIES_DIR}/ignition.img
